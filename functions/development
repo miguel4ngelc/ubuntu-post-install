@@ -24,7 +24,7 @@ case $REPLY in
     echo 'Current package list:'
     echo ''
     for package in $(cat $DEVTOOLS)
-    do 
+    do
     echo -e '\t'$package
     done
     echo ''
@@ -32,7 +32,7 @@ case $REPLY in
     echo ''
     case $REPLY in
     # Positive action
-    [Yy]* ) 
+    [Yy]* )
         show_info 'Requires root privileges:'
         # Feel free to change the contents of "dev-tools.list" to whatever suits your preferences.
         sudo apt-get install -y $(cat $DEVTOOLS)
@@ -55,11 +55,18 @@ case $REPLY in
     echo 'Installing RVM dependencies...'
     show_info 'Requires root privileges:'
     sudo apt-get install -y curl libreadline6-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libgdbm-dev libncurses5-dev bison libffi-dev
+    #instalar composer
+    curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+
+    #Si al actualizar los paquetes lavaravel falta el mcrypt
+    sudo ln -s /etc/php5/conf.d/mcrypt.ini /etc/php5/mods-available
+    sudo php5enmod mcrypt
+    sudo service apache2 restart
     show_success 'Done.'
     development
     ;;
 # Return
-[Rr]*) 
+[Rr]*)
     clear && main;;
 # Error
 * )
